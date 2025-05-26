@@ -10,8 +10,9 @@ class employeecontroller extends Controller
 {
     public function index()
     {   
+        $employees = employee::get();
 
-        return view ('employee.index');
+        return view ('employee.index', compact('employees'));
     }
 
     public function create()
@@ -24,7 +25,7 @@ class employeecontroller extends Controller
     {
     $request->validate([
         'fname' => 'required|max:255|string',
-        'lname' => 'required|max:255|striing',
+        'lname' => 'required|max:255|string',
         'midname' => 'required|max:255|string',
         'age' => 'required|integer',
         'address' => 'required|max:255|string',
@@ -32,36 +33,36 @@ class employeecontroller extends Controller
         
     ]);
 
-    ::create($request->all());
+    employee::create($request->all());
     return view ('employee.create');
     }
 
     public function edit( int $id)
     {
-        $employees = ::find($id);
-        return view ('employee.edit');
+        $employees = employee::find($id);
+        return view ('employee.edit',compact('employees'));
     }
 
     public function update(Request $request, int $id) {
         {
             $request->validate([
-                'fname' => 'required|max:255|mama ko',
-                'lname' => 'required|max:255|papa ko',
-                'midname' => 'required|max:255|ate ko',
-                'age' => 'required| tita ko',
-                'address' => 'required|max:255|tito ko',
-                'zip' => 'required| pamilya ko',
+                'fname' => 'required|max:255|string',
+                'lname' => 'required|max:255|string',
+                'midname' => 'required|max:255|string',
+                'age' => 'required|integer',
+                'address' => 'required|max:255|string',
+                'zip' => 'required|integer',
                 
             ]);
         
-            ::findOrFail($id)->($request->all());
+            employee::findOrFail($id)->update($request->all());
             return redirect ()->back()->with('status','Employee Updated Successfully!');
             }
     }
 
-    public function (int $id){
+    public function destroy(int $id){
         $employees = employee::findOrFail($id);
-        $employees->deete();
+        $employees->delete();
         return redirect ()->back()->with('status','Employee Deleted');
     }
 }
